@@ -1,26 +1,153 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* ---------- base fonts & colors ---------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-sans: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "JetBrains Mono", monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html, body { height: 100%; }
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #0B0E14;   /* bg */
+  color: #E6EDF3;        /* text */
+  font-family: var(--font-sans);
+}
+
+/* neutral link style; we control hover states per-component */
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* optional: subtle scrollbar */
+* { scrollbar-width: thin; scrollbar-color: #2ECC71 #0B0E14; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #2ECC71; }
+::-webkit-scrollbar-track { background: #0B0E14; }
+
+/* pre blocks use monospace consistently */
+pre { font-family: var(--font-mono); }
+
+/* subtle scanlines for terminal panels (tweak or remove if desired) */
+.scanlines {
+  background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 100% 24px;
+}
+
+/* ---- terminal chrome tweaks ---- */
+.terminal-frame { border-color: rgba(255,255,255,0.04); }   /* set to 'transparent' to remove border */
+.terminal-topbar { border-color: rgba(255,255,255,0.04); }
+
+/* remove default input chrome */
+.terminal-input {
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  color: inherit;
+  background: transparent;
+  caret-color: #2ECC71; /* thin caret color */
+}
+
+/* blinking caret (thin) */
+@keyframes cursorBlink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+.cursor-caret {
+  display:inline-block;
+  width:1px;
+  height:1.2em;
+  background:#2ECC71;
+  animation:cursorBlink 1s steps(1,end) infinite;
+}
+
+/* Terminal typeface (true monospace, no ligatures) */
+@theme {
+  /* Tailwind v4: define mono stack once and use `font-mono` */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+               "JetBrains Mono", "Liberation Mono", "DejaVu Sans Mono",
+               "Courier New", monospace;
+}
+
+/* Force mono + disable ligatures inside the terminal */
+.terminal-mono, .terminal-mono * {
+  font-family: var(--font-mono) !important;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0;              /* terminals are tight */
+}
+
+/* Make <pre> blocks look like a terminal’s buffer */
+.terminal-pre {
+  white-space: pre-wrap;
+  line-height: 1.35;
+}
+
+/* Force true monospace in the terminal input */
+.terminal-input {
+  font-family: var(--font-mono) !important;
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  background: transparent;
+  outline: none;
+  border: 0;
+}
+
+/* =========================
+   THEME TOKENS (light/dark)
+   ========================= */
+
+/* Light Theme */
+:root,
+:root[data-theme="light"] {
+  --bg:            #fafafa;
+  --surface:       #ffffff;
+  --text:          #111827;
+  --muted:         #6b7280;
+  --accent:        #2ecc71;
+  --border:        #d1d5db;   /* Lighter neutral */
+  --frame:         transparent; /* Remove the dark outline in light mode */
+}
+
+/* Dark Theme */
+:root[data-theme="dark"] {
+  --bg:            #0b0e14;
+  --surface:       #0f131a;
+  --text:          #e6edf3;
+  --muted:         #9aa4b2;
+  --accent:        #2ecc71;
+  --border:        #1f2937;
+  --frame:         #1a1f29;
+}
+
+/* Hook tokens into utility-like classes used in your components */
+body { background: var(--bg); color: var(--text); }
+
+.bg-surface { background: var(--surface); }
+.text-text  { color: var(--text); }
+.text-muted { color: var(--muted); }
+.text-accent{ color: var(--accent); }
+.border     { border-color: var(--border); }
+.terminal-frame { border-color: var(--frame); }
+
+/* Ensure the terminal + input keep mono face */
+.terminal-mono, .terminal-mono * {
+  font-family: var(--font-mono) !important;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Pre blocks */
+.terminal-pre { white-space: pre-wrap; line-height: 1.35; }
+
+/* Input */
+.terminal-input {
+  font-family: var(--font-mono) !important;
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  background: transparent;
+  outline: 0;
+  border: 0;
+  caret-color: var(--accent);
 }
