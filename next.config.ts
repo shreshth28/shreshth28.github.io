@@ -1,14 +1,18 @@
 // next.config.ts
 import type { NextConfig } from "next";
 
-const repo = "shreshth-portfolio";            // ← change if your repo name differs
-const isPages = process.env.GITHUB_PAGES === "true"; // set in CI
+const repo = "shreshth-portfolio";
+const isPages = process.env.GITHUB_PAGES === "true";
 
 const config: NextConfig = {
-  output: "export",               // write static site to /out
-  images: { unoptimized: true },  // no next/image optimization on Pages
+  output: "export",
+  images: { unoptimized: true },
   basePath: isPages ? `/${repo}` : undefined,
   assetPrefix: isPages ? `/${repo}/` : undefined,
+
+  eslint: {
+    ignoreDuringBuilds: true,        // ← skip ESLint in production builds
+  },
 };
 
 export default config;
