@@ -8,7 +8,7 @@ import { projects, type Company } from "@/lib/projects";
 
 type Line = { html: string };
 
-const RESUME_URL = "https://drive.google.com/file/d/1QmcEgF6ep1ANbFfAZOZaq7U21lwLub99/view?usp=drive_link"; // ← put your Drive link here
+const RESUME_URL = "https://drive.google.com/file/d/12jZXTAl70gyYTmDD7wETfsyyqFOeEW-C/view?usp=sharing"; // ← put your Drive link here
 
 export default function Terminal() {
   const { theme, setTheme, systemTheme } = useTheme();
