@@ -1,153 +1,107 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* ---------- base fonts & colors ---------- */
+/* Black & white. Follows the visitor's system light/dark setting. */
 :root {
-  --font-sans: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "JetBrains Mono", monospace;
+  --bg:      #ffffff;
+  --text:    #111111;
+  --muted:   #6b6b6b;
+  --line:    #e5e5e5;
+  --code-bg: #f6f6f6;
 }
 
-html, body { height: 100%; }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:      #0a0a0a;
+    --text:    #ededed;
+    --muted:   #9a9a9a;
+    --line:    #262626;
+    --code-bg: #141414;
+  }
+}
+
+/* Expose tokens as Tailwind utilities: text-muted, border-line, ... */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ---------- base ---------- */
 body {
-  background: #0B0E14;   /* bg */
-  color: #E6EDF3;        /* text */
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-sans);
-}
-
-/* neutral link style; we control hover states per-component */
-a { color: inherit; text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-/* optional: subtle scrollbar */
-* { scrollbar-width: thin; scrollbar-color: #2ECC71 #0B0E14; }
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb { background: #2ECC71; }
-::-webkit-scrollbar-track { background: #0B0E14; }
-
-/* pre blocks use monospace consistently */
-pre { font-family: var(--font-mono); }
-
-/* subtle scanlines for terminal panels (tweak or remove if desired) */
-.scanlines {
-  background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 100% 24px;
-}
-
-/* ---- terminal chrome tweaks ---- */
-.terminal-frame { border-color: rgba(255,255,255,0.04); }   /* set to 'transparent' to remove border */
-.terminal-topbar { border-color: rgba(255,255,255,0.04); }
-
-/* remove default input chrome */
-.terminal-input {
-  border: 0 !important;
-  outline: none !important;
-  box-shadow: none !important;
-  -webkit-appearance: none;
-  appearance: none;
-  color: inherit;
-  background: transparent;
-  caret-color: #2ECC71; /* thin caret color */
-}
-
-/* blinking caret (thin) */
-@keyframes cursorBlink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
-.cursor-caret {
-  display:inline-block;
-  width:1px;
-  height:1.2em;
-  background:#2ECC71;
-  animation:cursorBlink 1s steps(1,end) infinite;
-}
-
-/* Terminal typeface (true monospace, no ligatures) */
-@theme {
-  /* Tailwind v4: define mono stack once and use `font-mono` */
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-               "JetBrains Mono", "Liberation Mono", "DejaVu Sans Mono",
-               "Courier New", monospace;
-}
-
-/* Force mono + disable ligatures inside the terminal */
-.terminal-mono, .terminal-mono * {
-  font-family: var(--font-mono) !important;
-  font-variant-ligatures: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: 0;              /* terminals are tight */
 }
 
-/* Make <pre> blocks look like a terminal’s buffer */
-.terminal-pre {
-  white-space: pre-wrap;
-  line-height: 1.35;
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+a:hover { text-decoration-color: currentColor; }
+.no-underline { text-decoration: none; }
+
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875em; }
+
+.section-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
-/* Force true monospace in the terminal input */
-.terminal-input {
-  font-family: var(--font-mono) !important;
-  font-variant-ligatures: none;
-  letter-spacing: 0;
-  background: transparent;
-  outline: none;
-  border: 0;
-}
+/* resume bullet lists */
+.bullets { list-style: disc; padding-left: 1.1rem; }
+.bullets li { margin-top: 0.4rem; font-size: 0.9375rem; line-height: 1.6; color: var(--muted); }
+.bullets li::marker { color: var(--line); }
 
 /* =========================
-   THEME TOKENS (light/dark)
+   POST BODY (rendered markdown)
    ========================= */
+.prose { line-height: 1.75; font-size: 1.0625rem; }
+.prose > * + * { margin-top: 1.25em; }
+.prose h2 { font-size: 1.375rem; font-weight: 600; letter-spacing: -0.01em; margin-top: 2.2em; }
+.prose h3 { font-size: 1.125rem; font-weight: 600; margin-top: 1.8em; }
+.prose h2 a, .prose h3 a { text-decoration: none; }
+.prose h2 + *, .prose h3 + * { margin-top: 0.75em; }
+.prose ul { list-style: disc; padding-left: 1.4em; }
+.prose ol { list-style: decimal; padding-left: 1.4em; }
+.prose li + li { margin-top: 0.35em; }
+.prose li::marker { color: var(--muted); }
+.prose blockquote { border-left: 2px solid var(--text); padding-left: 1em; color: var(--muted); }
+.prose hr { border: 0; border-top: 1px solid var(--line); margin: 2.5em 0; }
+.prose img { border-radius: 6px; }
+.prose strong { font-weight: 600; }
 
-/* Light Theme */
-:root,
-:root[data-theme="light"] {
-  --bg:            #fafafa;
-  --surface:       #ffffff;
-  --text:          #111827;
-  --muted:         #6b7280;
-  --accent:        #2ecc71;
-  --border:        #d1d5db;   /* Lighter neutral */
-  --frame:         transparent; /* Remove the dark outline in light mode */
+.prose :not(pre) > code {
+  background: var(--code-bg);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
 }
 
-/* Dark Theme */
-:root[data-theme="dark"] {
-  --bg:            #0b0e14;
-  --surface:       #0f131a;
-  --text:          #e6edf3;
-  --muted:         #9aa4b2;
-  --accent:        #2ecc71;
-  --border:        #1f2937;
-  --frame:         #1a1f29;
+.prose pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1em 0;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.prose pre code { display: grid; font-size: inherit; }
+.prose pre [data-line] { padding: 0 1.1em; }
+.prose figure[data-rehype-pretty-code-figure] { margin-left: 0; margin-right: 0; }
+
+/* shiki dual themes: rehype-pretty-code emits both colors as CSS vars */
+.prose code[data-theme] span { color: var(--shiki-light); }
+@media (prefers-color-scheme: dark) {
+  .prose code[data-theme] span { color: var(--shiki-dark); }
 }
 
-/* Hook tokens into utility-like classes used in your components */
-body { background: var(--bg); color: var(--text); }
-
-.bg-surface { background: var(--surface); }
-.text-text  { color: var(--text); }
-.text-muted { color: var(--muted); }
-.text-accent{ color: var(--accent); }
-.border     { border-color: var(--border); }
-.terminal-frame { border-color: var(--frame); }
-
-/* Ensure the terminal + input keep mono face */
-.terminal-mono, .terminal-mono * {
-  font-family: var(--font-mono) !important;
-  font-variant-ligatures: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Pre blocks */
-.terminal-pre { white-space: pre-wrap; line-height: 1.35; }
-
-/* Input */
-.terminal-input {
-  font-family: var(--font-mono) !important;
-  font-variant-ligatures: none;
-  letter-spacing: 0;
-  background: transparent;
-  outline: 0;
-  border: 0;
-  caret-color: var(--accent);
-}
+.prose table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; display: block; overflow-x: auto; }
+.prose th, .prose td { border-bottom: 1px solid var(--line); padding: 0.5em 0.75em; text-align: left; }
+.prose th { font-weight: 600; }
