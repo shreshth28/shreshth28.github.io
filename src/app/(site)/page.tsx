@@ -19,8 +19,9 @@ function Section({ i, icon, title, children }: { i: number; icon: ReactNode; tit
   );
 }
 
-const pill =
-  "inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-sm transition-colors hover:border-text hover:bg-hover";
+const pillBase = "inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm transition";
+const pill = `${pillBase} border-line hover:border-text hover:bg-hover`;
+const pillSolid = `${pillBase} border-text bg-text text-bg hover:opacity-80`;
 
 export default function Home() {
   return (
@@ -38,7 +39,7 @@ export default function Home() {
           <a href={site.links.linkedin} target="_blank" rel="noreferrer" className={pill}>
             <LinkedInIcon size={15} /> LinkedIn
           </a>
-          <a href={site.resumePdf} target="_blank" rel="noreferrer" className={`${pill} bg-text text-bg hover:bg-text hover:opacity-85`}>
+          <a href={site.resumePdf} target="_blank" rel="noreferrer" className={pillSolid}>
             <Download size={15} /> Resume PDF
           </a>
         </div>
