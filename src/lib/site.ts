@@ -5,7 +5,7 @@ export const site = {
   title: "Shreshth Srivastava",
   description:
     "Linux kernel developer at Intel. Resume and blog.",
-  url: "https://www.shreshth.fun",
+  url: "https://shreshth28.github.io",
   email: "srivastava.shreshth@outlook.com",
   links: {
     github: "https://github.com/shreshth28",
