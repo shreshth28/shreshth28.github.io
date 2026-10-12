@@ -1,9 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Source_Serif_4 } from "next/font/google";
+import ThemeProvider from "@/components/ThemeProvider";
 import { site } from "@/lib/site";
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const serif = Source_Serif_4({ subsets: ["latin"], variable: "--font-serif-body" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -15,8 +17,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={sans.variable}>
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning className={`${sans.variable} ${serif.variable}`}>
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
